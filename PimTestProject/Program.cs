@@ -85,31 +85,32 @@ class Program
 
     private static async Task GetFormattedValue(JObject ProductReferenc)
     {
+        Console.WriteLine("Searching for the Product-ID.");
         JObject references = ProductReferenc["References"] as JObject;
-        string selfUrl = string.Empty;
-
+        string productID=string.Empty;
         if (references != null) // wenn keine referenzen vorhanden
         {
             foreach (KeyValuePair<string, JToken> reference in references)
             {
                 JObject referenceValue = reference.Value as JObject;
 
-                if (referenceValue != null && referenceValue["TargetItem"] != null && referenceValue["TargetItem"]["Self"] != null)
+                if (referenceValue != null && referenceValue["TargetItem"] != null && referenceValue["TargetItem"]["ID"] != null)
                 {
-                    selfUrl = referenceValue["TargetItem"]["Self"].ToString();
+                    productID = referenceValue["TargetItem"]["ID"].ToString();
+                    Console.WriteLine("Product-ID found.");
+                    break;
                 }
             }
         }
 
-        if (string.IsNullOrEmpty(selfUrl))
-        {
-            return;
-        }
-
         using (HttpClient client = CreateAuthenticatedClient())
         {
-            HttpResponseMessage response = await client.GetAsync(selfUrl);
+            HttpResponseMessage response = await client.GetAsync(UrlForReference + productID);
             JObject jObject = await HandleResponse(response);
+            if (jObject == null)
+            {
+                return;
+            }
             Console.WriteLine(jObject.ToString());
         }
     }
