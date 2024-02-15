@@ -19,7 +19,7 @@ class Program
     static async Task Main(string[] args)
     {
         if (!ReadCredentials())
-        {
+        {                                                     
             Console.WriteLine("Failed to read Credentials");
             return;
         }
@@ -30,13 +30,14 @@ class Program
         if (!int.TryParse(Console.ReadLine(), out productID))
         {
             Console.WriteLine("Invalid input for product ID.");
-            return;
         }
-
-        JObject json = await SearchForProductID(productID);
-        if (json != null)
+        else
         {
-            await GetFormattedValue(json);
+            JObject json = await SearchForProductID(productID);
+            if (json != null)
+            {
+                await GetFormattedValue(json);
+            }
         }
         Console.ReadLine();
     }
