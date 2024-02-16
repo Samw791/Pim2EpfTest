@@ -25,19 +25,32 @@ class Program
         }
 
         await GetAllSeries();
-        Console.WriteLine("Welche ProduktID wollen Sie haben: ");
+
         int productID;
-        if (!int.TryParse(Console.ReadLine(), out productID))
+        bool validInput = false;
+
+        while (!validInput)
         {
-            Console.WriteLine("Invalid input for product ID.");
-        }
-        else
-        {
-            JObject json = await SearchForProductID(productID);
-            if (json != null)
+            Console.WriteLine("Welche ProduktID wollen Sie haben: ");
+
+            if (!int.TryParse(Console.ReadLine(), out productID))
             {
-                await GetFormattedValue(json);
+                Console.WriteLine("Ungültige Eingabe für Produkt-ID. Bitte geben Sie eine gülitge ein.");
             }
+            else
+            {
+                JObject json = await SearchForProductID(productID);
+                if (json != null)
+                {
+                    await GetFormattedValue(json);
+                    validInput = true;
+                }
+                else
+                {
+                    Console.WriteLine("Produkt-ID nicht gefunden. Bitte geben Sie eine andere Produkt-ID ein.");
+                }
+            }
+
         }
         Console.ReadLine();
     }
@@ -77,6 +90,7 @@ class Program
 
     private static async Task<JObject> SearchForProductID(int productID)
     {
+        Console.Clear();
         using (HttpClient client = CreateAuthenticatedClient())
         {
             HttpResponseMessage response = await client.GetAsync($"{UrlForProductID}{productID}/{AttributeID}");
@@ -89,7 +103,7 @@ class Program
         Console.WriteLine("Searching for the Product-ID.");
         JObject references = ProductReferenc["References"] as JObject;
         string productID=string.Empty;
-        if (references != null) // wenn keine referenzen vorhanden
+        if (references != null)
         {
             foreach (KeyValuePair<string, JToken> reference in references)
             {
