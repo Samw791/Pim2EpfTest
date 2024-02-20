@@ -46,16 +46,19 @@ class Program
                     JObject jsonObj = await GetReferenceVKText(json);
                     Console.WriteLine(jsonObj.ToString());
                     GetFormattedValue(jsonObj);
-                    validInput = true;
                 }
                 else
                 {
                     Console.WriteLine("Produkt-ID nicht gefunden. Bitte geben Sie eine andere Produkt-ID ein.");
                 }
             }
-
+            Console.WriteLine("-----------------------------------------------------------------------------------------");
+            Console.WriteLine("Again? (Y/N)");
+            if (!(Console.ReadLine()=="Y"))
+            {
+                validInput = true;
+            }
         }
-        Console.ReadLine();
     }
     static bool ReadCredentials()
     {
@@ -135,37 +138,42 @@ class Program
     }
     private static void GetFormattedValue(JObject formattedValueReference)
     {
-        Console.WriteLine("Gib ID für 'Bestellschlüssel JSON für EPF' ein:");
+        Console.WriteLine("Geben Sie die ID für 'Bestellschlüssel JSON für EPF' ein:");
         int idToFilter;
-        if (!int.TryParse(Console.ReadLine(), out idToFilter))
+        bool validSearch = false;
+        while (!validSearch)
         {
-            Console.WriteLine("Ungültige Eingabe für ID. Bitte geben Sie eine gültige ein.");
-            return;
-        }
-
-        JToken attributes = formattedValueReference.SelectToken("Product.Attributes");
-
-        if (attributes != null)
-        {
-
-            foreach (JToken attribute in attributes)
+            if (!int.TryParse(Console.ReadLine(), out idToFilter))
             {
-
-                if (attribute["ID"].ToString() == idToFilter.ToString())
-                {
-                    string formattedValue = attribute["FormattedValue"].ToString();
-                    Console.WriteLine($"Formatted Value für ID {idToFilter}: {formattedValue}");
-                    return;
-                }
+                Console.WriteLine("Ungültige Eingabe für ID. Bitte geben Sie eine gültige ein.");
+                continue;
             }
 
-            Console.WriteLine($"Das Attribut mit der ID {idToFilter} wurde nicht gefunden.");
-        }
+            JToken attributes = formattedValueReference.SelectToken("Product.Attributes");
 
-        else
-        {
-            Console.WriteLine("Das 'Attributes'-Objekt wurde nicht gefunden.");
-        }
+            if (attributes != null)
+            {
+
+                foreach (JToken attribute in attributes)
+                {
+
+                    if (attribute["ID"].ToString() == idToFilter.ToString())
+                    {
+                        string formattedValue = attribute["FormattedValue"].ToString();
+                        Console.WriteLine($"Formatted Value für ID {idToFilter}: {formattedValue}");
+                        return;
+                    }
+                }
+
+                Console.WriteLine($"Das Attribut mit der ID {idToFilter} wurde nicht gefunden. Bitte geben Sie eine ID ein zu der es auch ein Attribut gibt.");
+            }
+
+            else
+            {
+                Console.WriteLine("Das 'Attributes'-Objekt wurde nicht gefunden.");
+                return;
+            }
+        }       
     }
 
 
