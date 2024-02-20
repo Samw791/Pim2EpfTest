@@ -19,7 +19,7 @@ class Program
     static async Task Main(string[] args)
     {
         if (!ReadCredentials())
-        {                                                     
+        {
             Console.WriteLine("Failed to read Credentials");
             return;
         }
@@ -35,14 +35,17 @@ class Program
 
             if (!int.TryParse(Console.ReadLine(), out productID))
             {
-                Console.WriteLine("Ungültige Eingabe für Produkt-ID. Bitte geben Sie eine gülitge ein.");
+                Console.WriteLine("Ungültige Eingabe für Produkt-ID. Bitte geben Sie eine gültige ein.");
             }
             else
             {
                 JObject json = await SearchForProductID(productID);
+                Console.WriteLine(json.ToString());
                 if (json != null)
                 {
-                    await GetFormattedValue(json);
+                    JObject jsonObj = await GetReferenceVKText(json);
+                    Console.WriteLine(jsonObj.ToString());
+                    GetFormattedValue(jsonObj);
                     validInput = true;
                 }
                 else
@@ -98,11 +101,10 @@ class Program
         }
     }
 
-    private static async Task GetFormattedValue(JObject ProductReferenc)
+    private static async Task<JObject> GetReferenceVKText(JObject ProductReferenc)
     {
-        Console.WriteLine("Searching for the Product-ID.");
         JObject references = ProductReferenc["References"] as JObject;
-        string productID=string.Empty;
+        string productID = string.Empty;
         if (references != null)
         {
             foreach (KeyValuePair<string, JToken> reference in references)
@@ -112,7 +114,6 @@ class Program
                 if (referenceValue != null && referenceValue["TargetItem"] != null && referenceValue["TargetItem"]["ID"] != null)
                 {
                     productID = referenceValue["TargetItem"]["ID"].ToString();
-                    Console.WriteLine("Product-ID found.");
                     break;
                 }
             }
@@ -124,10 +125,48 @@ class Program
             JObject jObject = await HandleResponse(response);
             if (jObject == null)
             {
-                return;
+                return null;
             }
-            Console.WriteLine(jObject.ToString());
+            else
+            {
+                return jObject;
+            }
         }
     }
+    private static void GetFormattedValue(JObject formattedValueReference)
+    {
+        Console.WriteLine("Gib ID für 'Bestellschlüssel JSON für EPF' ein:");
+        int idToFilter;
+        if (!int.TryParse(Console.ReadLine(), out idToFilter))
+        {
+            Console.WriteLine("Ungültige Eingabe für ID. Bitte geben Sie eine gültige ein.");
+            return;
+        }
+
+        JToken attributes = formattedValueReference.SelectToken("Product.Attributes");
+
+        if (attributes != null)
+        {
+
+            foreach (JToken attribute in attributes)
+            {
+
+                if (attribute["ID"].ToString() == idToFilter.ToString())
+                {
+                    string formattedValue = attribute["FormattedValue"].ToString();
+                    Console.WriteLine($"Formatted Value für ID {idToFilter}: {formattedValue}");
+                    return;
+                }
+            }
+
+            Console.WriteLine($"Das Attribut mit der ID {idToFilter} wurde nicht gefunden.");
+        }
+
+        else
+        {
+            Console.WriteLine("Das 'Attributes'-Objekt wurde nicht gefunden.");
+        }
+    }
+
 
 }

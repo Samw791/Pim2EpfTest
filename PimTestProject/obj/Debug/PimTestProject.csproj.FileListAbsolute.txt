@@ -18,3 +18,13 @@ D:\AzureDevOps\PimTestProject\PimTestProject\PimTestProject\obj\Debug\PimTestPro
 D:\AzureDevOps\PimTestProject\PimTestProject\PimTestProject\obj\Debug\PimTestP.39A72EFE.Up2Date
 D:\AzureDevOps\PimTestProject\PimTestProject\PimTestProject\obj\Debug\PimTestProject.exe
 D:\AzureDevOps\PimTestProject\PimTestProject\PimTestProject\obj\Debug\PimTestProject.pdb
+D:\AzureDevOps\Azubi Projekte\Pim2EpfTest\Pim2EpfTest\PimTestProject\bin\Debug\PimTestProject.exe.config
+D:\AzureDevOps\Azubi Projekte\Pim2EpfTest\Pim2EpfTest\PimTestProject\bin\Debug\PimTestProject.exe
+D:\AzureDevOps\Azubi Projekte\Pim2EpfTest\Pim2EpfTest\PimTestProject\bin\Debug\PimTestProject.pdb
+D:\AzureDevOps\Azubi Projekte\Pim2EpfTest\Pim2EpfTest\PimTestProject\bin\Debug\Newtonsoft.Json.dll
+D:\AzureDevOps\Azubi Projekte\Pim2EpfTest\Pim2EpfTest\PimTestProject\bin\Debug\Newtonsoft.Json.xml
+D:\AzureDevOps\Azubi Projekte\Pim2EpfTest\Pim2EpfTest\PimTestProject\obj\Debug\PimTestProject.csproj.AssemblyReference.cache
+D:\AzureDevOps\Azubi Projekte\Pim2EpfTest\Pim2EpfTest\PimTestProject\obj\Debug\PimTestProject.csproj.CoreCompileInputs.cache
+D:\AzureDevOps\Azubi Projekte\Pim2EpfTest\Pim2EpfTest\PimTestProject\obj\Debug\PimTestP.39A72EFE.Up2Date
+D:\AzureDevOps\Azubi Projekte\Pim2EpfTest\Pim2EpfTest\PimTestProject\obj\Debug\PimTestProject.exe
+D:\AzureDevOps\Azubi Projekte\Pim2EpfTest\Pim2EpfTest\PimTestProject\obj\Debug\PimTestProject.pdb
