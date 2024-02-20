@@ -54,10 +54,12 @@ class Program
             }
             Console.WriteLine("-----------------------------------------------------------------------------------------");
             Console.WriteLine("Again? (Y/N)");
-            if (!(Console.ReadLine()=="Y"))
+            if (!(Console.ReadLine().ToUpper()=="Y"))
             {
                 running = false;
             }
+            Console.Clear();
+
         }
     }
     static bool ReadCredentials()
