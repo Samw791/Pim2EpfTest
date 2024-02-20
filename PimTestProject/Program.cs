@@ -27,9 +27,9 @@ class Program
         await GetAllSeries();
 
         int productID;
-        bool validInput = false;
+        bool running = true;
 
-        while (!validInput)
+        while (running)
         {
             Console.WriteLine("Welche ProduktID wollen Sie haben: ");
 
@@ -56,7 +56,7 @@ class Program
             Console.WriteLine("Again? (Y/N)");
             if (!(Console.ReadLine()=="Y"))
             {
-                validInput = true;
+                running = false;
             }
         }
     }
